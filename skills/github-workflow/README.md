@@ -56,17 +56,15 @@ gh auth status
 
 ### 2. Install This Skill
 
-Run one command from inside your project (works on Windows, macOS, and Linux):
+Skills can only be installed from the **`main`** branch. Run one command from inside your project (works on Windows, macOS, and Linux):
 
 ```bash
 # Install into the current project (.agents/skills/github-workflow/)
-npx github:diludfernando/AI_Skills_for_Projects github-workflow
+npx github:diludfernando/AI_Skills_for_Projects#main github-workflow
 
 # Or install globally (available across all projects)
-npx github:diludfernando/AI_Skills_for_Projects github-workflow --global
+npx github:diludfernando/AI_Skills_for_Projects#main github-workflow --global
 ```
-
-*(Append `#develop` after the repo name if installing from `develop` before merge to `main`.)*
 
 ### 3. Configure Your PR Merge Target Branch
 
