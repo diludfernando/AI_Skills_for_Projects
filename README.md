@@ -13,25 +13,23 @@ A collection of modular, self-contained AI agent skills. Each skill lives in its
 
 ## Quick Install
 
-Run from inside any project (works on Windows, macOS, and Linux — requires Node.js):
+Skills can **only** be installed from the **`main`** branch. Run from inside any project (works on Windows, macOS, and Linux — requires Node.js):
 
 ```bash
 # Interactive menu — pick which skill(s) to install
-npx github:diludfernando/AI_Skills_for_Projects
+npx github:diludfernando/AI_Skills_for_Projects#main
 ```
 
 Or install a specific skill directly:
 
 ```bash
 # Install into the current project (.agents/skills/)
-npx github:diludfernando/AI_Skills_for_Projects github-workflow
-npx github:diludfernando/AI_Skills_for_Projects webpage-testing
+npx github:diludfernando/AI_Skills_for_Projects#main github-workflow
+npx github:diludfernando/AI_Skills_for_Projects#main webpage-testing
 
 # Install globally (available in all projects)
-npx github:diludfernando/AI_Skills_for_Projects webpage-testing --global
+npx github:diludfernando/AI_Skills_for_Projects#main webpage-testing --global
 ```
-
-> **Tip:** To install from the `develop` branch before it is merged into `main`, add `#develop` after the repo name (e.g. `npx github:diludfernando/AI_Skills_for_Projects#develop`).
 
 After installing, start a **new chat session** in your AI agent and check the skill's `README.md` for any prerequisites or optional `config.json` settings.
 
@@ -40,10 +38,10 @@ After installing, start a **new chat session** in your AI agent and check the sk
 
 ### Installer Flags
 ```bash
-npx github:diludfernando/AI_Skills_for_Projects --list                    # List available skills
-npx github:diludfernando/AI_Skills_for_Projects --all                     # Install all skills
-npx github:diludfernando/AI_Skills_for_Projects webpage-testing --force   # Overwrite existing install
-npx github:diludfernando/AI_Skills_for_Projects webpage-testing --global  # Install to ~/.gemini/config/skills/
+npx github:diludfernando/AI_Skills_for_Projects#main --list                    # List available skills
+npx github:diludfernando/AI_Skills_for_Projects#main --all                     # Install all skills
+npx github:diludfernando/AI_Skills_for_Projects#main webpage-testing --force   # Overwrite existing install
+npx github:diludfernando/AI_Skills_for_Projects#main webpage-testing --global  # Install to ~/.gemini/config/skills/
 ```
 
 ### Link Selectively via `skills.json` (Zero Copying)

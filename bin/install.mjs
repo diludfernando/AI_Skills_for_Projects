@@ -9,6 +9,7 @@
  *   npx github:diludfernando/AI_Skills_for_Projects --list            # List available skills
  */
 
+import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -18,7 +19,71 @@ import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const SKILLS_ROOT = path.resolve(__dirname, "..", "skills");
+const REPO_ROOT = path.resolve(__dirname, "..");
+const SKILLS_ROOT = path.resolve(REPO_ROOT, "skills");
+const ALLOWED_INSTALL_BRANCH = "main";
+
+function assertMainBranchInstall() {
+  // 1. If invoked via npx from GitHub (e.g. github:owner/repo#branch), inspect
+  //    the enclosing npx temp package.json to reject any non-main ref.
+  let dir = path.dirname(REPO_ROOT);
+  for (let depth = 0; depth < 3; depth++) {
+    const parentPkgPath = path.join(dir, "package.json");
+    if (fs.existsSync(parentPkgPath)) {
+      try {
+        const pkg = JSON.parse(fs.readFileSync(parentPkgPath, "utf8"));
+        const allDeps = {
+          ...(pkg.dependencies || {}),
+          ...(pkg.devDependencies || {}),
+          ...(pkg.optionalDependencies || {}),
+        };
+        const spec = allDeps["ai-skills"];
+        if (typeof spec === "string") {
+          const hashIdx = spec.indexOf("#");
+          if (hashIdx !== -1) {
+            const ref = spec.slice(hashIdx + 1).trim();
+            if (ref && ref !== ALLOWED_INSTALL_BRANCH) {
+              console.error(
+                `Installation blocked: skills can only be installed from the "${ALLOWED_INSTALL_BRANCH}" branch (requested "#${ref}").`
+              );
+              console.error(
+                `Use: npx github:diludfernando/AI_Skills_for_Projects#${ALLOWED_INSTALL_BRANCH}`
+              );
+              process.exit(1);
+            }
+          }
+        }
+      } catch {
+        // Ignore unreadable parent package.json
+      }
+      break;
+    }
+    const nextDir = path.dirname(dir);
+    if (nextDir === dir) break;
+    dir = nextDir;
+  }
+
+  // 2. If invoked from a local Git checkout of this repository, require main.
+  if (fs.existsSync(path.join(REPO_ROOT, ".git"))) {
+    const res = spawnSync("git", ["branch", "--show-current"], {
+      cwd: REPO_ROOT,
+      encoding: "utf8",
+      windowsHide: true,
+    });
+    if (res.status === 0) {
+      const currentBranch = (res.stdout || "").trim();
+      if (currentBranch && currentBranch !== ALLOWED_INSTALL_BRANCH) {
+        console.error(
+          `Installation blocked: skills can only be installed from the "${ALLOWED_INSTALL_BRANCH}" branch (current branch: "${currentBranch}").`
+        );
+        console.error(
+          `Switch to "${ALLOWED_INSTALL_BRANCH}" or install with: npx github:diludfernando/AI_Skills_for_Projects#${ALLOWED_INSTALL_BRANCH}`
+        );
+        process.exit(1);
+      }
+    }
+  }
+}
 
 function parseFrontmatterDescription(skillMdPath) {
   try {
@@ -116,10 +181,10 @@ function parseArgs(argv) {
 
 function printHelp(skills) {
   console.log(`
-AI Skills Installer
+AI Skills Installer (main branch only)
 
 Usage:
-  npx github:diludfernando/AI_Skills_for_Projects [skill...] [options]
+  npx github:diludfernando/AI_Skills_for_Projects#main [skill...] [options]
 
 Options:
   -g, --global       Install globally (~/.gemini/config/skills/)
@@ -226,6 +291,9 @@ async function main() {
     }
     return;
   }
+
+  // Enforce main-branch-only installation before installing any skill.
+  assertMainBranchInstall();
 
   let selected = [];
   let isGlobal = opts.global;

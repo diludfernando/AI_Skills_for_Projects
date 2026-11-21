@@ -39,17 +39,15 @@ webpage-testing/
 
 ### 2. Install This Skill
 
-Run one command from inside your project (works on Windows, macOS, and Linux):
+Skills can only be installed from the **`main`** branch. Run one command from inside your project (works on Windows, macOS, and Linux):
 
 ```bash
 # Install into the current project (.agents/skills/webpage-testing/)
-npx github:diludfernando/AI_Skills_for_Projects webpage-testing
+npx github:diludfernando/AI_Skills_for_Projects#main webpage-testing
 
 # Or install globally (available across all projects)
-npx github:diludfernando/AI_Skills_for_Projects webpage-testing --global
+npx github:diludfernando/AI_Skills_for_Projects#main webpage-testing --global
 ```
-
-*(Append `#develop` after the repo name if installing from `develop` before merge to `main`.)*
 
 ### 3. Configure Defaults (Optional)
 
