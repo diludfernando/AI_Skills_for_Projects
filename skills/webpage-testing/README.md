@@ -37,28 +37,19 @@ webpage-testing/
 | **Agent Browser Capability** | Live interactive QA (`test page`, `smoke test`) | Built into Antigravity | Built into Antigravity |
 | **Playwright** *(optional)* | Running automated E2E tests (`write e2e`, `run e2e`) | `npm init playwright@latest` (inside your project) | `npm init playwright@latest` |
 
-### 2. Install Only This Skill Into Your Agent
+### 2. Install This Skill
 
-Choose **one** installation scope (no need to clone the entire repository):
+Run one command from inside your project (works on Windows, macOS, and Linux):
 
-#### A. Single Project (`.agents/skills/`) — Recommended for Teams
 ```bash
-# Append #develop if installing from the develop branch before merge to main
-npx degit diludfernando/AI_Skills_for_Projects/skills/webpage-testing .agents/skills/webpage-testing
+# Install into the current project (.agents/skills/webpage-testing/)
+npx github:diludfernando/AI_Skills_for_Projects webpage-testing
+
+# Or install globally (available across all projects)
+npx github:diludfernando/AI_Skills_for_Projects webpage-testing --global
 ```
 
-#### B. Global (`~/.gemini/config/skills/`) — Available Across All Projects
-**Windows (PowerShell):**
-```powershell
-npx degit diludfernando/AI_Skills_for_Projects/skills/webpage-testing "$env:USERPROFILE\.gemini\config\skills\webpage-testing"
-```
-
-**macOS / Linux:**
-```bash
-npx degit diludfernando/AI_Skills_for_Projects/skills/webpage-testing ~/.gemini/config/skills/webpage-testing
-```
-
-*(Prefer pure Git without `npx`? See the `git sparse-checkout` and `skills.json` options in the [root README](../../README.md).)*
+*(Append `#develop` after the repo name if installing from `develop` before merge to `main`.)*
 
 ### 3. Configure Defaults (Optional)
 

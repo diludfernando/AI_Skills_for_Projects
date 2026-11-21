@@ -54,28 +54,19 @@ Verify authentication:
 gh auth status
 ```
 
-### 2. Install Only This Skill Into Your Agent
+### 2. Install This Skill
 
-Choose **one** installation scope (no need to clone the entire repository):
+Run one command from inside your project (works on Windows, macOS, and Linux):
 
-#### A. Single Project (`.agents/skills/`) — Recommended for Teams
 ```bash
-# Append #develop if installing from the develop branch before merge to main
-npx degit diludfernando/AI_Skills_for_Projects/skills/github-workflow .agents/skills/github-workflow
+# Install into the current project (.agents/skills/github-workflow/)
+npx github:diludfernando/AI_Skills_for_Projects github-workflow
+
+# Or install globally (available across all projects)
+npx github:diludfernando/AI_Skills_for_Projects github-workflow --global
 ```
 
-#### B. Global (`~/.gemini/config/skills/`) — Available Across All Projects
-**Windows (PowerShell):**
-```powershell
-npx degit diludfernando/AI_Skills_for_Projects/skills/github-workflow "$env:USERPROFILE\.gemini\config\skills\github-workflow"
-```
-
-**macOS / Linux:**
-```bash
-npx degit diludfernando/AI_Skills_for_Projects/skills/github-workflow ~/.gemini/config/skills/github-workflow
-```
-
-*(Prefer pure Git without `npx`? See the `git sparse-checkout` and `skills.json` options in the [root README](../../README.md).)*
+*(Append `#develop` after the repo name if installing from `develop` before merge to `main`.)*
 
 ### 3. Configure Your PR Merge Target Branch
 
