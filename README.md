@@ -7,6 +7,7 @@ A curated collection of modular, self-contained AI agent skills. Each skill live
 | Skill | Folder | Description |
 | :--- | :--- | :--- |
 | **GitHub Workflow** | [`skills/github-workflow/`](./skills/github-workflow/) | Safe Git & GitHub automation (`push`, `branch push`, PR creation/updates, configurable merge target branch, no auto-merge). |
+| **Webpage Testing** | [`skills/webpage-testing/`](./skills/webpage-testing/) | Live browser functional QA (`test page`, `smoke test`) + Playwright E2E test authoring & execution (`write e2e`, `run e2e`). |
 
 ## Repository Structure
 
@@ -17,6 +18,13 @@ AI_Skills_for_Projects/
 │   └── skills.json              # Registers skills/ for automatic agent discovery
 └── skills/
     ├── github-workflow/         # Isolated skill folder
+    │   ├── README.md
+    │   ├── SKILL.md
+    │   ├── config.json
+    │   ├── scripts/
+    │   ├── resources/
+    │   └── references/
+    ├── webpage-testing/         # Isolated skill folder
     │   ├── README.md
     │   ├── SKILL.md
     │   ├── config.json
@@ -40,19 +48,21 @@ Then choose **one** of the three installation methods below depending on how you
 
 ### Option 1: Install for a Single Project (Recommended for Teams)
 
-Copy the skill folder into your target project's `.agents/skills/` directory so it is committed with your project and shared with teammates.
+Copy the skill folder you want (for example `github-workflow` or `webpage-testing`) into your target project's `.agents/skills/` directory so it is committed with your project and shared with teammates.
 
 **Windows (PowerShell):**
 ```powershell
+# Replace <skill-name> with e.g. github-workflow or webpage-testing
 New-Item -ItemType Directory -Path "<path-to-your-project>\.agents\skills" -Force
-Copy-Item -Path ".\AI_Skills_for_Projects\skills\github-workflow" `
-  -Destination "<path-to-your-project>\.agents\skills\github-workflow" -Recurse -Force
+Copy-Item -Path ".\AI_Skills_for_Projects\skills\<skill-name>" `
+  -Destination "<path-to-your-project>\.agents\skills\<skill-name>" -Recurse -Force
 ```
 
 **macOS / Linux (Bash/Zsh):**
 ```bash
+# Replace <skill-name> with e.g. github-workflow or webpage-testing
 mkdir -p "<path-to-your-project>/.agents/skills"
-cp -R ./AI_Skills_for_Projects/skills/github-workflow "<path-to-your-project>/.agents/skills/"
+cp -R ./AI_Skills_for_Projects/skills/<skill-name> "<path-to-your-project>/.agents/skills/"
 ```
 
 ### Option 2: Install Globally (Available in Every Project on Your Machine)
@@ -61,15 +71,17 @@ Copy the skill folder into your global agent config directory (`~/.gemini/config
 
 **Windows (PowerShell):**
 ```powershell
+# Replace <skill-name> with e.g. github-workflow or webpage-testing
 New-Item -ItemType Directory -Path "$env:USERPROFILE\.gemini\config\skills" -Force
-Copy-Item -Path ".\AI_Skills_for_Projects\skills\github-workflow" `
-  -Destination "$env:USERPROFILE\.gemini\config\skills\github-workflow" -Recurse -Force
+Copy-Item -Path ".\AI_Skills_for_Projects\skills\<skill-name>" `
+  -Destination "$env:USERPROFILE\.gemini\config\skills\<skill-name>" -Recurse -Force
 ```
 
 **macOS / Linux (Bash/Zsh):**
 ```bash
+# Replace <skill-name> with e.g. github-workflow or webpage-testing
 mkdir -p ~/.gemini/config/skills
-cp -R ./AI_Skills_for_Projects/skills/github-workflow ~/.gemini/config/skills/
+cp -R ./AI_Skills_for_Projects/skills/<skill-name> ~/.gemini/config/skills/
 ```
 
 ### Option 3: Link All Skills Automatically via `skills.json` (No Copying)
@@ -91,7 +103,7 @@ Instead of copying folders every time a skill is updated, point your global or p
 
 ### Final Step: Check Skill Prerequisites & Start a New Chat
 
-1. Open the specific skill's `README.md` (for example, [`skills/github-workflow/README.md`](./skills/github-workflow/README.md)) to install any required CLI tools or configure settings.
+1. Open the specific skill's `README.md` (e.g., [`skills/github-workflow/README.md`](./skills/github-workflow/README.md) or [`skills/webpage-testing/README.md`](./skills/webpage-testing/README.md)) to install any required CLI tools or configure settings.
 2. Start a **new conversation/session** in your AI agent so it discovers the newly installed skill.
 
 ---

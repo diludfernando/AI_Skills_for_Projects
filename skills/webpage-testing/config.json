@@ -1,0 +1,30 @@
+{
+  "default_url": "http://localhost:3000",
+  "disallow_destructive_actions_on": [
+    "prod",
+    "production"
+  ],
+  "viewports": {
+    "desktop": {
+      "width": 1440,
+      "height": 900
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  "checks": {
+    "functional_flows": true,
+    "broken_links": true,
+    "console_and_network_errors": true,
+    "responsive_layout": false,
+    "accessibility_basics": false
+  },
+  "playwright": {
+    "test_dir": "tests/e2e",
+    "browser": "chromium",
+    "headless": true
+  },
+  "report_output_dir": "qa-reports"
+}
