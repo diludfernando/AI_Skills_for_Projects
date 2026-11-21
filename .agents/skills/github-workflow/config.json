@@ -1,0 +1,12 @@
+{
+  "pr_target_branch": "",
+  "disallowed_target_branches": [
+    "main",
+    "master"
+  ],
+  "protected_push_branches": [
+    "main",
+    "master"
+  ],
+  "allow_pr_merge": false
+}
