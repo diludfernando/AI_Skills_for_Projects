@@ -54,39 +54,28 @@ Verify authentication:
 gh auth status
 ```
 
-### 2. Copy the Skill Into Your Agent
+### 2. Install Only This Skill Into Your Agent
 
-Choose **one** installation scope:
+Choose **one** installation scope (no need to clone the entire repository):
 
-#### A. Single Project (`.agents/skills/`)
-Use this if you want the skill enabled only for one repository (and shared with your team via Git).
+#### A. Single Project (`.agents/skills/`) — Recommended for Teams
+```bash
+# Append #develop if installing from the develop branch before merge to main
+npx degit diludfernando/AI_Skills_for_Projects/skills/github-workflow .agents/skills/github-workflow
+```
 
+#### B. Global (`~/.gemini/config/skills/`) — Available Across All Projects
 **Windows (PowerShell):**
 ```powershell
-New-Item -ItemType Directory -Path "<your-project>\.agents\skills" -Force
-Copy-Item -Path ".\skills\github-workflow" -Destination "<your-project>\.agents\skills\github-workflow" -Recurse -Force
+npx degit diludfernando/AI_Skills_for_Projects/skills/github-workflow "$env:USERPROFILE\.gemini\config\skills\github-workflow"
 ```
 
 **macOS / Linux:**
 ```bash
-mkdir -p "<your-project>/.agents/skills"
-cp -R ./skills/github-workflow "<your-project>/.agents/skills/"
+npx degit diludfernando/AI_Skills_for_Projects/skills/github-workflow ~/.gemini/config/skills/github-workflow
 ```
 
-#### B. Global (`~/.gemini/config/skills/`)
-Use this if you want `github-workflow` available across **all** projects on your machine.
-
-**Windows (PowerShell):**
-```powershell
-New-Item -ItemType Directory -Path "$env:USERPROFILE\.gemini\config\skills" -Force
-Copy-Item -Path ".\skills\github-workflow" -Destination "$env:USERPROFILE\.gemini\config\skills\github-workflow" -Recurse -Force
-```
-
-**macOS / Linux:**
-```bash
-mkdir -p ~/.gemini/config/skills
-cp -R ./skills/github-workflow ~/.gemini/config/skills/
-```
+*(Prefer pure Git without `npx`? See the `git sparse-checkout` and `skills.json` options in the [root README](../../README.md).)*
 
 ### 3. Configure Your PR Merge Target Branch
 

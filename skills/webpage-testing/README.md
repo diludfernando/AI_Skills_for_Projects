@@ -37,35 +37,28 @@ webpage-testing/
 | **Agent Browser Capability** | Live interactive QA (`test page`, `smoke test`) | Built into Antigravity | Built into Antigravity |
 | **Playwright** *(optional)* | Running automated E2E tests (`write e2e`, `run e2e`) | `npm init playwright@latest` (inside your project) | `npm init playwright@latest` |
 
-### 2. Copy the Skill Into Your Agent
+### 2. Install Only This Skill Into Your Agent
 
-Choose **one** installation scope:
+Choose **one** installation scope (no need to clone the entire repository):
 
-#### A. Single Project (`.agents/skills/`)
+#### A. Single Project (`.agents/skills/`) — Recommended for Teams
+```bash
+# Append #develop if installing from the develop branch before merge to main
+npx degit diludfernando/AI_Skills_for_Projects/skills/webpage-testing .agents/skills/webpage-testing
+```
+
+#### B. Global (`~/.gemini/config/skills/`) — Available Across All Projects
 **Windows (PowerShell):**
 ```powershell
-New-Item -ItemType Directory -Path "<your-project>\.agents\skills" -Force
-Copy-Item -Path ".\skills\webpage-testing" -Destination "<your-project>\.agents\skills\webpage-testing" -Recurse -Force
+npx degit diludfernando/AI_Skills_for_Projects/skills/webpage-testing "$env:USERPROFILE\.gemini\config\skills\webpage-testing"
 ```
 
 **macOS / Linux:**
 ```bash
-mkdir -p "<your-project>/.agents/skills"
-cp -R ./skills/webpage-testing "<your-project>/.agents/skills/"
+npx degit diludfernando/AI_Skills_for_Projects/skills/webpage-testing ~/.gemini/config/skills/webpage-testing
 ```
 
-#### B. Global (`~/.gemini/config/skills/`)
-**Windows (PowerShell):**
-```powershell
-New-Item -ItemType Directory -Path "$env:USERPROFILE\.gemini\config\skills" -Force
-Copy-Item -Path ".\skills\webpage-testing" -Destination "$env:USERPROFILE\.gemini\config\skills\webpage-testing" -Recurse -Force
-```
-
-**macOS / Linux:**
-```bash
-mkdir -p ~/.gemini/config/skills
-cp -R ./skills/webpage-testing ~/.gemini/config/skills/
-```
+*(Prefer pure Git without `npx`? See the `git sparse-checkout` and `skills.json` options in the [root README](../../README.md).)*
 
 ### 3. Configure Defaults (Optional)
 

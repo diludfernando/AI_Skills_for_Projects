@@ -1,6 +1,6 @@
 # AI Skills for Projects
 
-A curated collection of modular, self-contained AI agent skills. Each skill lives in its own isolated folder under [`skills/`](./skills/) so you can browse, maintain, or install individual skills cleanly into any project or globally on your machine.
+A curated collection of modular, self-contained AI agent skills. Each skill lives in its own isolated folder under [`skills/`](./skills/) so you can download and install **only the skill(s) you need** without cloning the whole repository.
 
 ## Available Skills
 
@@ -36,74 +36,84 @@ AI_Skills_for_Projects/
 
 ---
 
-## How to Install a Skill to Your AI Agent
+## Install Only the Skill You Need (No Full Clone Required)
 
-First, clone this repository to your machine (once):
+Replace `<skill-name>` with the folder name of the skill you want (e.g., `github-workflow` or `webpage-testing`).
 
+> **Branch note:** Examples below use `main` by default. If a new skill is only on `develop` before being merged to `main`, append `#develop` in `degit` or `--branch develop` in `git clone`.
+
+### Method 1: One-Line Install with `npx degit` (Fastest)
+
+Downloads **only** that single skill folder with no `.git` history and no other skills (requires Node.js):
+
+**Install into a single project (`.agents/skills/` — recommended for teams):**
 ```bash
-git clone https://github.com/diludfernando/AI_Skills_for_Projects.git
+npx degit diludfernando/AI_Skills_for_Projects/skills/<skill-name> .agents/skills/<skill-name>
 ```
 
-Then choose **one** of the three installation methods below depending on how you want to use the skill.
+**Install globally (`~/.gemini/config/skills/` — available across all projects):**
 
-### Option 1: Install for a Single Project (Recommended for Teams)
-
-Copy the skill folder you want (for example `github-workflow` or `webpage-testing`) into your target project's `.agents/skills/` directory so it is committed with your project and shared with teammates.
-
-**Windows (PowerShell):**
+*Windows (PowerShell):*
 ```powershell
-# Replace <skill-name> with e.g. github-workflow or webpage-testing
-New-Item -ItemType Directory -Path "<path-to-your-project>\.agents\skills" -Force
-Copy-Item -Path ".\AI_Skills_for_Projects\skills\<skill-name>" `
-  -Destination "<path-to-your-project>\.agents\skills\<skill-name>" -Recurse -Force
+npx degit diludfernando/AI_Skills_for_Projects/skills/<skill-name> "$env:USERPROFILE\.gemini\config\skills\<skill-name>"
 ```
 
-**macOS / Linux (Bash/Zsh):**
+*macOS / Linux (Bash/Zsh):*
 ```bash
-# Replace <skill-name> with e.g. github-workflow or webpage-testing
-mkdir -p "<path-to-your-project>/.agents/skills"
-cp -R ./AI_Skills_for_Projects/skills/<skill-name> "<path-to-your-project>/.agents/skills/"
+npx degit diludfernando/AI_Skills_for_Projects/skills/<skill-name> ~/.gemini/config/skills/<skill-name>
 ```
 
-### Option 2: Install Globally (Available in Every Project on Your Machine)
+---
 
-Copy the skill folder into your global agent config directory (`~/.gemini/config/skills/`).
+### Method 2: Pure Git (`git sparse-checkout` — No `npx` Needed)
 
-**Windows (PowerShell):**
+Built into Git 2.25+. Fetches only the single skill folder you specify:
+
+**Windows (PowerShell — installs into current project's `.agents/skills/`):**
 ```powershell
-# Replace <skill-name> with e.g. github-workflow or webpage-testing
-New-Item -ItemType Directory -Path "$env:USERPROFILE\.gemini\config\skills" -Force
-Copy-Item -Path ".\AI_Skills_for_Projects\skills\<skill-name>" `
-  -Destination "$env:USERPROFILE\.gemini\config\skills\<skill-name>" -Recurse -Force
+$skill = "webpage-testing"   # or "github-workflow"
+git clone --depth 1 --filter=blob:none --sparse https://github.com/diludfernando/AI_Skills_for_Projects.git _tmp_skill
+git -C _tmp_skill sparse-checkout set "skills/$skill"
+New-Item -ItemType Directory -Path ".agents\skills" -Force | Out-Null
+Move-Item "_tmp_skill\skills\$skill" ".agents\skills\$skill" -Force
+Remove-Item _tmp_skill -Recurse -Force
 ```
 
-**macOS / Linux (Bash/Zsh):**
+**macOS / Linux (Bash/Zsh — installs into current project's `.agents/skills/`):**
 ```bash
-# Replace <skill-name> with e.g. github-workflow or webpage-testing
-mkdir -p ~/.gemini/config/skills
-cp -R ./AI_Skills_for_Projects/skills/<skill-name> ~/.gemini/config/skills/
+SKILL="webpage-testing"      # or "github-workflow"
+git clone --depth 1 --filter=blob:none --sparse https://github.com/diludfernando/AI_Skills_for_Projects.git _tmp_skill
+git -C _tmp_skill sparse-checkout set "skills/$SKILL"
+mkdir -p .agents/skills
+mv "_tmp_skill/skills/$SKILL" ".agents/skills/$SKILL"
+rm -rf _tmp_skill
 ```
 
-### Option 3: Link All Skills Automatically via `skills.json` (No Copying)
+*(To install globally instead of project-only, replace `.agents/skills` with `$env:USERPROFILE\.gemini\config\skills` on Windows or `~/.gemini/config/skills` on macOS/Linux.)*
 
-Instead of copying folders every time a skill is updated, point your global or project `skills.json` directly at your local clone of this repo's `skills/` folder:
+---
 
-1. Create or edit `~/.gemini/config/skills.json` (global) or `<your-project>/.agents/skills.json` (project-only):
-   ```json
-   {
-     "entries": [
-       {
-         "path": "/absolute/path/to/AI_Skills_for_Projects/skills"
-       }
-     ]
-   }
-   ```
-   *(On Windows, use forward slashes like `C:/Users/<you>/Desktop/AI_Skills_for_Projects/skills` or escaped backslashes `C:\\Users\\...`.)*
-2. Whenever you pull updates (`git pull`) in this repo, all linked projects automatically get the latest skills.
+### Method 3: Link Selectively via `skills.json` (`include_only`, Zero Copying)
 
-### Final Step: Check Skill Prerequisites & Start a New Chat
+If you prefer cloning this repo once and keeping skills updated via `git pull`, point any project's `.agents/skills.json` (or global `~/.gemini/config/skills.json`) at your local clone and cherry-pick only the skills you want with `include_only`:
 
-1. Open the specific skill's `README.md` (e.g., [`skills/github-workflow/README.md`](./skills/github-workflow/README.md) or [`skills/webpage-testing/README.md`](./skills/webpage-testing/README.md)) to install any required CLI tools or configure settings.
+```json
+{
+  "entries": [
+    {
+      "path": "/absolute/path/to/AI_Skills_for_Projects/skills",
+      "include_only": ["github-workflow", "webpage-testing"]
+    }
+  ]
+}
+```
+*(Omit `include_only` if you want to load all skills in the repo. On Windows, use forward slashes like `C:/Users/<you>/Desktop/AI_Skills_for_Projects/skills`.)*
+
+---
+
+### Final Step: Check Prerequisites & Start a New Chat
+
+1. Open the installed skill's `README.md` (e.g., [`skills/github-workflow/README.md`](./skills/github-workflow/README.md) or [`skills/webpage-testing/README.md`](./skills/webpage-testing/README.md)) to install any required CLI tools or configure `config.json`.
 2. Start a **new conversation/session** in your AI agent so it discovers the newly installed skill.
 
 ---
