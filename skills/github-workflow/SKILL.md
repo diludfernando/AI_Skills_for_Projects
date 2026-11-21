@@ -62,10 +62,13 @@ The merge target branch and branch-protection policy are defined in code so the 
 
 ## Preflight: Gather Context First
 
-Before proposing any action for `push` or `branch push`, run the helper script to inspect repository, config, and PR state in one step:
+Before proposing any action for `push` or `branch push`, run the helper script ([git_context.mjs](./scripts/git_context.mjs)) to inspect repository, config, and PR state in one step:
 
 ```bash
-node .agents/skills/github-workflow/scripts/git_context.mjs
+# Run from the repository root using this skill's directory path:
+node skills/github-workflow/scripts/git_context.mjs
+# (Or if installed inside another repo's .agents/skills/ folder:)
+# node .agents/skills/github-workflow/scripts/git_context.mjs
 ```
 
 If Node.js is unavailable, fall back to the manual commands in [commands-reference.md](./references/commands-reference.md) and read [config.json](./config.json) (plus `<repo-root>/.github-workflow.json` if present).
