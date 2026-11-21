@@ -29,7 +29,7 @@ const SENSITIVE_PATTERNS = [
   /(^|[/\\])(id_rsa|id_ed25519|credentials\.json|secrets?\.(json|ya?ml|toml))$/i,
 ];
 
-function runCmd(cmd, args) {
+function runCmd(cmd, args, { trim = true } = {}) {
   const res = spawnSync(cmd, args, {
     encoding: "utf8",
     windowsHide: true,
@@ -37,10 +37,12 @@ function runCmd(cmd, args) {
   if (res.error) {
     return { code: 127, stdout: "", stderr: res.error.message };
   }
+  const stdout = res.stdout || "";
+  const stderr = res.stderr || "";
   return {
     code: res.status ?? 1,
-    stdout: (res.stdout || "").trim(),
-    stderr: (res.stderr || "").trim(),
+    stdout: trim ? stdout.trim() : stdout.replace(/[\r\n]+$/, ""),
+    stderr: stderr.trim(),
   };
 }
 
@@ -182,7 +184,9 @@ function listAvailableNonDisallowedBranches(disallowedBranches) {
 }
 
 function parseStatus() {
-  const res = runCmd("git", ["status", "--porcelain=v1", "-uall"]);
+  const res = runCmd("git", ["status", "--porcelain=v1", "-uall"], {
+    trim: false,
+  });
   const staged = [];
   const unstaged = [];
   const untracked = [];
