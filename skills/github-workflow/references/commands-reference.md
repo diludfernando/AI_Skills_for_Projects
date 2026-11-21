@@ -24,7 +24,7 @@ Avoid passing multiline Markdown directly inside shell quotes (`-m "..."` or `--
 
 ## Configuring the PR Merge Target Branch in Code
 
-Edit `.agents/skills/github-workflow/config.json` (global skill default) or add `.github-workflow.json` at any repository's root (per-project override):
+Edit `config.json` inside this skill folder (global skill default) or add `.github-workflow.json` at any repository's root (per-project override):
 
 ```json
 {
